@@ -9,9 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'mediaType', type: 'string')]
-#[ORM\DiscriminatorMap(['serie' => 'Serie'])]
 class Serie extends Media
 {
     /**
