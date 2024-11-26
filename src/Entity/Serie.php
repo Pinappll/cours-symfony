@@ -7,14 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SerieRepository::class)]
-class Serie
-{
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
+#[ORM\Entity(repositoryClass: SerieRepository::class)]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'mediaType', type: 'string')]
+#[ORM\DiscriminatorMap(['serie' => 'Serie'])]
+class Serie extends Media
+{
     /**
      * @var Collection<int, Season>
      */
@@ -26,17 +25,6 @@ class Serie
         $this->seasons = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Season>
