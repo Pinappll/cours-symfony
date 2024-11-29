@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\CategorieRepository;
+use App\Repository\MediaRepository;
 use App\Repository\MovieRepository;
 use App\Repository\SerieRepository;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,11 +18,14 @@ class HomeController extends AbstractController
 
     #[Route('/', name: 'page_homepage')]
     public function index(
+        MediaRepository $mediasRepository,
         CategorieRepository $categorieRepository
     )
     {
+        $medias = $mediasRepository->findAll();
         return $this->render('index.html.twig',
             [
+                'medias' => $medias,
                 'categories' => $categorieRepository->findAll()
             ]
         );
@@ -35,7 +39,7 @@ class HomeController extends AbstractController
         $movies = $movieRepository->findAll();
         return $this->render('index.html.twig',
             [
-                'movies' => $movies
+                'medias' => $movies
             ]
         );
     }
@@ -48,7 +52,7 @@ class HomeController extends AbstractController
         $series = $serieRepository->findAll();
         return $this->render('index.html.twig',
             [
-                'series' => $series
+                'medias' => $series
             ]
         );
     }
