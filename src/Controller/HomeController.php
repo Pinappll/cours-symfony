@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\CategorieRepository;
+use App\Repository\MovieRepository;
+use App\Repository\SerieRepository;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,8 +20,6 @@ class HomeController extends AbstractController
         CategorieRepository $categorieRepository
     )
     {
-
-
         return $this->render('index.html.twig',
             [
                 'categories' => $categorieRepository->findAll()
@@ -27,5 +27,30 @@ class HomeController extends AbstractController
         );
     }
 
+    #[Route('/movies', name: 'page_movie')]
+    public function movies(
+        MovieRepository $movieRepository
+    )
+    {
+        $movies = $movieRepository->findAll();
+        return $this->render('index.html.twig',
+            [
+                'movies' => $movies
+            ]
+        );
+    }
+
+    #[Route('/series', name: 'page_series')]
+    public function series(
+        SerieRepository $serieRepository
+    )
+    {
+        $series = $serieRepository->findAll();
+        return $this->render('index.html.twig',
+            [
+                'series' => $series
+            ]
+        );
+    }
 
 }

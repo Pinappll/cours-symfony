@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin', name: 'page_admin')]
     public function admin()
     {
         return $this->render('admin/admin.html.twig');
