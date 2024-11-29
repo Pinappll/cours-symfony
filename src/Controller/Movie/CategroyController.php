@@ -9,24 +9,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 class CategroyController extends AbstractController
 {
-    #[Route('/category', name: 'category')]
-    public function category()
+    #[Route('/category/{id}', name: 'page_category')]
+    public function category(
+        Categorie $categorie,
+    )
     {
-        return $this->render('movie/category.html.twig');
+        return $this->render('movie/category.html.twig',
+            [
+                'categorie' => $categorie
+            ]
+        );
     }
 
     #[Route('/discover', name: 'page_discover')]
     public function discover(
         MovieRepository $movieRepository,
-        CategorieRepository $categoriesRepository
+        CategorieRepository $categorieRepository
     )
     {
         $movies = $movieRepository->findAll();
-        $categories = $categoriesRepository->findAll();
+        $categories = $categorieRepository->findAll();
         return $this->render('movie/discover.html.twig',
             [
                 'movies' => $movies,
-                'categories' => $categoriesRepository->findAll()
+                'categories' => $categories
             ]
         );
     }
