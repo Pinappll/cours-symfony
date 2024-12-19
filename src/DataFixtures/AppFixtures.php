@@ -4,12 +4,16 @@ namespace App\DataFixtures;
 
 use App\Entity\Categorie;
 use App\Entity\Episode;
+use App\Entity\User;
+use App\Enum\UserAccountStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use PhpParser\Comment;
 
 class AppFixtures extends Fixture
 {
+    public const MAX_USERS = 10;
+
     public function load(ObjectManager $manager): void
     {
         $categorie1 = new Categorie();
@@ -44,5 +48,35 @@ class AppFixtures extends Fixture
 
 
         $manager->flush();
+    }
+
+    protected function createUsers(ObjectManager $manager, array &$users): void
+    {
+        for ($i = 0; $i < self::MAX_USERS; $i++) {
+            $user = new User();
+            $user->setEmail(email: "test_{$i}@example.com");
+            $user->setUsername(username: "test_{$i}");
+            $user->setPassword(password: 'test');
+            $user->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+            $users[] = $user;
+
+            $manager->persist(object: $user);
+        }
+
+        $admin = new User();
+        $admin->setEmail('admin@example.com');
+        $admin->setUsername('Joshua');
+        $admin->setPassword('motdepasse');
+        $admin->addRole('ROLE_ADMIN');
+        $admin->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+        $manager->persist($admin);
+
+        $normal = new User();
+        $normal->setEmail('normal@example.com');
+        $normal->setUsername('John');
+        $normal->setPassword('motdepasse');
+        $normal->addRole('ROLE_BANNED');
+        $normal->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+        $manager->persist($normal);
     }
 }

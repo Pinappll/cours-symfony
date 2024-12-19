@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AuthController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
+    #[Route('/loginPerso', name: 'login')]
     public function login()
     {
         return $this->render('auth/login.html.twig');

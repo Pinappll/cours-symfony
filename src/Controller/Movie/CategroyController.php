@@ -7,26 +7,25 @@ use App\Repository\CategorieRepository;
 use App\Repository\MediaRepository;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 class CategroyController extends AbstractController
 {
     #[Route('/category/{id}', name: 'page_category')]
     public function category(
-        CategorieRepository $categorieRepository,
-        MediaRepository $movieRepository,
-        int $id
-    )
+        Categorie $categorie,
+        MediaRepository $mediaRepository,
+    ): Response
     {
-        $categorieRepository = $categorieRepository->find($id);
-        $movies = $movieRepository->findAll();
-        if ($movies->getCategories()->contains($categorieRepository)) {
-            $movies = $categorieRepository->getMovies();
-        }
-
-
+        $medias = $mediaRepository->findByCategoryWithPagination(
+            category: $categorie,
+            currentPage: 1,
+            maxPerPage: 9,
+        );
         return $this->render('movie/category.html.twig',
             [
-                'movies' => $movies
+                'categorie' => $categorie,
+                'medias' => $medias
             ]
         );
     }
