@@ -32,12 +32,13 @@ class Comments
     private ?Media $media = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childComments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?self $parentComment = null;
 
     /**
      * @var Collection<int, self>
      */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parentComment')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parentComment',  cascade: ['remove'])]
     private Collection $childComments;
 
     public function __construct()
