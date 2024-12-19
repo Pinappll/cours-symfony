@@ -9,11 +9,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[AllowDynamicProperties] #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -67,6 +68,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: Types::ARRAY)]
     private array $roles = ['ROLE_USER'];
+
+    public string $plainPassword = '';
+
 
     public function __construct()
     {
@@ -299,7 +303,7 @@ class User implements UserInterface
 
     public function eraseCredentials(): void
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->plainPassword = '';
 
     }
 
@@ -326,5 +330,15 @@ class User implements UserInterface
         $this->accountStatus = $accountStatus;
 
         return $this;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 }
